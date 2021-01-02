@@ -1,4 +1,6 @@
 
+{$i deltics.inc}
+
   unit Test.VarRecAsString;
 
 interface
