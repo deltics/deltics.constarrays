@@ -51,8 +51,10 @@ implementation
     c         := 3.14159;
     expected  := '3.1416';
   {$ifdef 64BIT}
-    {$ifdef DELPHIXE2}
-      expected  := '3.1415';  // 64-bit bug in Delphi XE2?
+    {$ifdef DELPHIXE2__}
+      {$ifdef __DELPHIXE4}
+        expected  := '3.1415';  // 64-bit bug in Delphi XE2 and XE3?
+      {$endif}
     {$endif}
   {$endif}
     Test('VarRecAsString([Currency(3.14159)], 0)').Assert(VarRecAsString([c], 0)).Equals(expected);
