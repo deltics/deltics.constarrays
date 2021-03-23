@@ -7,13 +7,13 @@
 interface
 
   uses
-    Deltics.Strings;
+    Deltics.StringTypes;
 
 
   type
     ConstArray = class
     public
-      class function AsStringArray(aArgs: array of const): TStringArray;
+      class function AsStringArray(aArgs: array of const): StringArray;
     end;
     TConstArray = array of TVarRec;
 
@@ -21,9 +21,9 @@ interface
   {$ifdef TypeHelpers}
     TConstArrayHelper = record helper for TConstArray
     private
-      function get_AsStringArray: TStringArray; {$ifdef InlineMethods} inline; {$endif}
+      function get_AsStringArray: StringArray; {$ifdef InlineMethods} inline; {$endif}
     public
-      property AsStringArray: TStringArray read get_AsStringArray;
+      property AsStringArray: StringArray read get_AsStringArray;
     end;
 
 
@@ -46,12 +46,13 @@ implementation
 
   uses
     SysUtils,
-    Deltics.Exceptions;
+    Deltics.Exceptions,
+    Deltics.Strings;
 
 
 
 
-  class function ConstArray.AsStringArray(aArgs: array of const): TStringArray;
+  class function ConstArray.AsStringArray(aArgs: array of const): StringArray;
   var
     i: Integer;
   begin
@@ -63,7 +64,7 @@ implementation
 
 
 {$ifdef TypeHelpers}
-  function TConstArrayHelper.get_AsStringArray: TStringArray;
+  function TConstArrayHelper.get_AsStringArray: StringArray;
   begin
     result := ConstArray.AsStringArray(self);
   end;
