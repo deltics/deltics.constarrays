@@ -111,6 +111,9 @@ implementation
       end;
     {$endif}
 
+  var
+    strLen: Integer;
+    strPtr: PAnsiChar;
   begin
     case aValue.VType of
       vtBoolean:
@@ -128,10 +131,10 @@ implementation
         result := IntToStr(aValue.VInteger);
 
       vtChar:
-        result := STR.FromANSI(ANSIChar(aValue.VChar));
+        result := STR.FromAnsi(AnsiChar(aValue.VChar));
 
       vtWideChar:
-        result := STR.FromWIDE(WIDEChar(aValue.VWideChar));
+        result := Str.FromWide(WideChar(aValue.VWideChar));
 
       vtExtended:
         result := FloatToStr(aValue.VExtended^);
@@ -143,25 +146,30 @@ implementation
         result := IntToHex(IntPtr(aValue.VPointer), SizeOf(Pointer) * 2);
 
       vtPChar:
-        result := STR.FromANSI(AnsiString(aValue.VPChar));
+        result := Str.FromBuffer(PAnsiChar(aValue.VPChar));
 
       vtPWideChar:
-        result := STR.FromBuffer(aValue.VPWideChar);
+        result := Str.FromBuffer(aValue.VPWideChar);
 
     {$ifNdef NEXTGEN}
-      vtString:
-        result := UnicodeString(PShortString(aValue.VAnsiString)^);
+      vtString: begin
+                  strPtr  := PAnsiChar(aValue.VString);
+                  strLen  := PByte(strPtr)^;
+
+                  Inc(strPtr);
+                  result  := Str.FromBuffer(strPtr, strLen);
+                end;
 
       vtAnsiString:
-        result := STR.FromANSI(ANSIString(aValue.VAnsiString^));
+        result := Str.FromBuffer(PAnsiChar(aValue.VAnsiString));
 
       vtWideString:
-        result := STR.FromBuffer(PWIDEChar(aValue.VWideString));
+        result := Str.FromBuffer(PWideChar(aValue.VWideString));
     {$endif}
 
     {$ifdef UNICODE}
       vtUnicodeString:
-        result := UnicodeString(aValue.VUnicodeString);
+        result := Str.FromBuffer(PWideChar(aValue.VUnicodeString));
     {$endif}
 
     {$ifdef DELPHI XE2__}
