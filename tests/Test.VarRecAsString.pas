@@ -11,20 +11,33 @@ interface
 
   type
     VarRecAsStringTests = class(TTest)
+      procedure AnsiStringValues;
       procedure BooleanValues;
       procedure CurrencyValues;
       procedure DoubleValues;
       procedure ExtendedValues;
+      procedure ShortStringValues;
+      procedure UnicodeStringValues;
+      procedure WideStringValues;
     end;
 
 
 implementation
 
   uses
-    Deltics.ConstArrays;
+    Deltics.ConstArrays,
+    Deltics.StringTypes;
 
 
 { VarRecAsStringTests }
+
+  procedure VarRecAsStringTests.AnsiStringValues;
+  const
+    ANSI: AnsiString = 'foo';
+  begin
+    Test('VarRecAsString([Ansi(foo)], 0)').Assert(VarRecAsString([ANSI], 0)).Equals('foo');
+  end;
+
 
   procedure VarRecAsStringTests.BooleanValues;
   begin
@@ -104,5 +117,32 @@ implementation
     e := 0.1;
     Test('VarRecAsString([Extended(0.1)], 0)').Assert(VarRecAsString([e], 0)).Equals('0.1');
   end;
+
+
+  procedure VarRecAsStringTests.ShortStringValues;
+  const
+    SHORT: String[3] = 'foo';
+  begin
+    Test('VarRecAsString([ShortString(foo)], 0)').Assert(VarRecAsString([SHORT], 0)).Equals('foo');
+  end;
+
+
+  procedure VarRecAsStringTests.UnicodeStringValues;
+  const
+    Unicode: UnicodeString = 'foo';
+  begin
+    Test('VarRecAsString([Unicode(foo)], 0)').Assert(VarRecAsString([Unicode], 0)).Equals('foo');
+  end;
+
+
+  procedure VarRecAsStringTests.WideStringValues;
+  const
+    WIDE: WideString = 'foo';
+  begin
+    Test('VarRecAsString([Wide(foo)], 0)').Assert(VarRecAsString([WIDE], 0)).Equals('foo');
+  end;
+
+
+
 
 end.
