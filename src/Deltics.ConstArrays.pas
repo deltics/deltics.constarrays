@@ -164,12 +164,12 @@ implementation
         result := Str.FromBuffer(PAnsiChar(aValue.VAnsiString));
 
       vtWideString:
-        result := Str.FromBuffer(PWideChar(aValue.VWideString));
+        result := WideString(aValue.VWideString);
     {$endif}
 
     {$ifdef UNICODE}
       vtUnicodeString:
-        result := Str.FromBuffer(PWideChar(aValue.VUnicodeString));
+        result := UnicodeString(aValue.VUnicodeString);
     {$endif}
 
     {$ifdef DELPHI XE2__}
